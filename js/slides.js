@@ -1,5 +1,6 @@
 Reveal.initialize({
     controls: true,
+    transition: 'cube',
     dependencies: [{
         src: "lib/js/classList.js",
         condition: function () {
