@@ -1,0 +1,26 @@
+#!/usr/bin/env groovy
+
+def quoted = ~/[^\\s\"']+|\"([^\"]*)\"|'([^']*)'/
+
+def parseProps = { List<String> input ->
+    def props = [:]
+    input.each { i ->
+        def parts = i.split("=")
+        props[parts[0]] = parts.drop(1).join(" ").replace('"', "")
+    }
+    return props
+}
+
+def propReader = args ? new File(args[0]).newReader() : System.in.newReader()
+
+def props = parseProps(propReader.readLines())
+
+def file = new File("index.html")
+
+def content = file.getText()
+
+props.each { prop ->
+    content = content.replace("{${prop.key}}", prop.value)
+}
+
+println(content)
