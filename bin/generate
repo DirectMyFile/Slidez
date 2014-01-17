@@ -19,7 +19,13 @@ def file = new File("index.html")
 
 def content = file.getText()
 
+def possibleProps = content.findAll("(?s)(?<=\\{)(.+?)(?=\\})")
+
 props.each { prop ->
+    if (!possibleProps.contains(prop.key)) {
+        System.err.println("Illegal Key '${prop.key}'")
+        content = content.replace("{${prop.key}}", "")
+    }
     content = content.replace("{${prop.key}}", prop.value)
 }
 
